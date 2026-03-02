@@ -4,7 +4,7 @@
 STACK_PATH="/opt/stacks/navidrome"
 
 echo "Creating directory structure at $STACK_PATH..."
-sudo mkdir -p "$STACK_PATH/data" "$STACK_PATH/music"
+sudo mkdir -p "$STACK_PATH/data" "$STACK_PATH/music" "$STACK_PATH/beets"
 
 echo "Setting permissions..."
 sudo chown -R $(id -u):$(id -g) "$STACK_PATH"
