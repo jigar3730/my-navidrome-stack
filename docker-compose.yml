@@ -12,20 +12,8 @@ services:
       ND_DATAFOLDER: /data
       ND_MUSICFOLDER: /music
       # Optional: Use folder names as Album titles if tags are missing
-      ND_ALBUMIDENTIFIER: folder 
+      ND_ALBUMIDENTIFIER: folder
     volumes:
       - "${STACK_DIR}/data:/data"
       - "${MUSIC_FOLDER}:/music"
 
-  beets:
-    image: lscr.io/linuxserver/beets:latest
-    container_name: beets
-    restart: unless-stopped
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Etc/UTC
-    volumes:
-      - "${STACK_DIR}/beets:/config"
-      - "${MUSIC_FOLDER}:/music"
-      - "./beets/config.yaml:/config/config.yaml:ro"
