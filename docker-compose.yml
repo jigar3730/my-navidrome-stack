@@ -1,14 +1,18 @@
 services:
   navidrome:
     image: deluan/navidrome:latest
-    user: "${PUID}:${PGID}" # Matches your Ubuntu user to prevent permission issues
+    user: "${PUID}:${PGID}"
     ports:
       - "4533:4533"
     restart: unless-stopped
     environment:
+      # These variables control the internal Navidrome engine
       ND_SCANSCHEDULE: 1h
       ND_LOGLEVEL: info
-      ND_BASEURL: "${NAVIDROME_BASE_URL}" # e.g., https://music.yourdomain.com
+      ND_BASEURL: "${NAVIDROME_BASE_URL}"
+      ND_DATAFOLDER: /data
+      ND_MUSICFOLDER: /music
     volumes:
-      - ./data:/data
-      - "${MUSIC_FOLDER}:/music:ro" # Read-only access to your music
+      # Mapping our /opt/stacks folders into the container
+      - "${STACK_DIR}/data:/data"
+      - "${MUSIC_FOLDER}:/music:ro"
