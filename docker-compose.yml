@@ -6,24 +6,26 @@ services:
       - "4533:4533"
     restart: unless-stopped
     environment:
-      # These variables control the internal Navidrome engine
       ND_SCANSCHEDULE: 1h
       ND_LOGLEVEL: info
       ND_BASEURL: "${NAVIDROME_BASE_URL}"
       ND_DATAFOLDER: /data
       ND_MUSICFOLDER: /music
+      # Optional: Use folder names as Album titles if tags are missing
+      ND_ALBUMIDENTIFIER: folder 
     volumes:
-      # Mapping our /opt/stacks folders into the container
       - "${STACK_DIR}/data:/data"
-      - "${MUSIC_FOLDER}:/music:ro"
-  # Add this section under 'services:' in your docker-compose.yml
+      - "${MUSIC_FOLDER}:/music"
+
   beets:
-    image: linuxserver/beets:latest
+    image: lscr.io/linuxserver/beets:latest
     container_name: beets
-    volumes:
-      - ${STACK_DIR}/beets:/config
-      - ${MUSIC_FOLDER}:/music
+    restart: unless-stopped
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-    restart: unless-stopped
+      - TZ=Etc/UTC
+    volumes:
+      - "${STACK_DIR}/beets:/config"
+      - "${MUSIC_FOLDER}:/music"
+      - "./beets/config.yaml:/config/config.yaml:ro"
